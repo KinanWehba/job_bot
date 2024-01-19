@@ -45,6 +45,16 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         "Use /start to start the bot again.",)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    username = update.message.from_user.username
+    fname = update.message.from_user.first_name
+    lname = update.message.from_user.last_name
+    chat_id = update.message.from_user.id
+    dict_info = {
+        "username":username,
+        "fname":fname,
+        "lanem":lname,
+        "chat_id":chat_id,
+        }
     await update.message.reply_text(
         "Use /cancel to stop the bot.\n"
         "Use /add_job to add .",)
