@@ -1,6 +1,4 @@
 import logging
-
-
 from telegram import  Update
 from telegram.ext import (
     Application,
@@ -10,6 +8,7 @@ from telegram.ext import (
     CallbackQueryHandler,
     MessageHandler,
     filters,)
+
 from add_job_handler import(
     add_job , 
     regular_choice ,
@@ -20,7 +19,9 @@ from add_job_handler import(
     TYPING_CHOICE,
     TYPING_REPLY,
     regex_pattern,
-    regex_catagory)
+    regex_category,
+    )
+from helper_function import base_request
 from dotenv import load_dotenv
 import os
 import re
@@ -55,11 +56,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         "lanem":lname,
         "chat_id":chat_id,
         }
-    await update.message.reply_text(
-        "Use /cancel to stop the bot.\n"
-        "Use /add_job to add .",)
-
-
+    req = base_request(dict_info,'start','str')
+    if req == "new" :
+        await update.message.reply_text(
+            "اهلا بكم في دليلك بوت.\n"
+            "لاضافة عمل اضغط على /add_job\n"
+            "للبحث عن عمل اضغط على /search_job.\n"
+            "اهلا بكم في دليلك بوت.\n"
+            "اهلا بكم في دليلك بوت.\n"
+            "Use /add_job to add .",
+            )
+    else : 
+        await update.message.reply_text(
+            "اهلا بكم في دليلك بوت.\n"
+            "لاضافة عمل اضغط على /add_job\n"
+            "للبحث عن عمل اضغط على /search_job.\n"
+            "اهلا بكم في دليلك بوت.\n"
+            "اهلا بكم في دليلك بوت.\n"
+            "Use /add_job to add .",
+            )
 
 def main() -> None:
     """Run the bot."""
@@ -74,11 +89,11 @@ def main() -> None:
         states={
             CHOOSING: [
                 MessageHandler(filters.Regex(regex_pattern), regular_choice),
-                MessageHandler(filters.Regex("^Something else...$"), custom_choice),],
+                MessageHandler(filters.Regex("^اضافة حقل$"), custom_choice),],
             TYPING_CHOICE: [
                 MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^Done$")), regular_choice)],
             TYPING_REPLY: [
-                CallbackQueryHandler( received_information, pattern= regex_catagory),
+                CallbackQueryHandler( received_information, pattern= regex_category),
                 MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^Done$")),received_information,)],
             },
         fallbacks=[MessageHandler(filters.Regex("^Done$"), done)],
