@@ -12,7 +12,7 @@ from telegram.ext import (
 from add_job_handler import(
     add_job , 
     regular_choice ,
-    custom_choice ,
+    # custom_choice ,
     received_information ,
     done ,
     CHOOSING,
@@ -89,14 +89,15 @@ def main() -> None:
         states={
             CHOOSING: [
                 MessageHandler(filters.Regex(regex_pattern), regular_choice),
-                MessageHandler(filters.Regex("^اضافة حقل$"), custom_choice),],
+                # MessageHandler(filters.Regex("^اضافة تفصيل$"), custom_choice),
+                ],
             TYPING_CHOICE: [
-                MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^Done$")), regular_choice)],
+                MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^حفظ$")), regular_choice)],
             TYPING_REPLY: [
                 CallbackQueryHandler( received_information, pattern= regex_category),
-                MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^Done$")),received_information,)],
+                MessageHandler(filters.TEXT & ~(filters.COMMAND | filters.Regex("^حفظ$")),received_information,)],
             },
-        fallbacks=[MessageHandler(filters.Regex("^Done$"), done)],
+        fallbacks=[MessageHandler(filters.Regex("^حفظ$"), done)],
  )
 
     application.add_handler(help_handler)
